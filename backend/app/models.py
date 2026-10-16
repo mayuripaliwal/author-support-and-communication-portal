@@ -1,4 +1,4 @@
-from database import Base
+from app.database import Base
 from sqlalchemy import String, Date, func, Integer, ForeignKey, JSON, Text, DateTime, Enum as SQLAlchemyEnum, CheckConstraint, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import date, datetime
@@ -118,6 +118,7 @@ class TicketMessage(Base):
     """
     - Class for ticket messages (author replies, admin responses, and admin's internal notes)
     """
+    __tablename__="ticket_messages"
     __table_args__=(
         CheckConstraint(
             """
@@ -133,7 +134,7 @@ class TicketMessage(Base):
             )
             """,
             name="check_ticket_message_sender"
-        )
+        ),
     )
 
 
