@@ -3,11 +3,11 @@ from app.config import ROLES
 from typing import Literal
 
 class NewAuthor(BaseModel):
-    name:str=Field(min_length=1, max_length=255)
-    email:EmailStr
-    phone:str | None=Field(default=None, max_length=30)
-    city:str | None=Field(default=None, max_length=100)
-    password:str=Field(min_length=8, max_length=128)
+    name:str=Field(min_length=1, max_length=255, examples=["Priya Sharma"])
+    email:EmailStr=Field(examples=["priya.sharma@email.com"])
+    phone:str | None=Field(default=None, max_length=30, examples=["+91-98765-43210"])
+    city:str | None=Field(default=None, max_length=100, examples=["Mumbai"])
+    password:str=Field(min_length=8, max_length=128, examples=["password"])
 
 class LoginRequest(BaseModel):
     """
@@ -16,5 +16,5 @@ class LoginRequest(BaseModel):
     - Validates `password` with basic length check
     """
     role:ROLES
-    email:EmailStr
-    password:str=Field(min_length=8, max_length=128)
+    email:EmailStr=Field(examples=["priya.sharma@email.com"])
+    password:str=Field(min_length=8, max_length=128, examples=["password"])
