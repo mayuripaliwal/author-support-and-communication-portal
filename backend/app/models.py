@@ -31,6 +31,20 @@ class Admin(Base):
     email:Mapped[str]=mapped_column(String(255), unique=True, nullable=False)
     password_hash:Mapped[str]=mapped_column(String(255), nullable=False)
 
+class BookStatus(str, Enum):
+    """
+    Enum for Book status
+    """
+    MANUSCRIPT_RECEIVED = "Manuscript Received"
+    EDITING = "Editing"
+    COVER_DESIGN = "Cover Design"
+    TYPESETTING = "Typesetting"
+    PROOFREADING = "Proofreading"
+    ISBN_ASSIGNMENT = "ISBN Assignment"
+    PRINTING = "Printing"
+    DISTRIBUTION_SETUP = "Distribution Setup"
+    PUBLISHED_AND_LIVE = "Published & Live"
+
 class Book(Base):
     """
     - Class for Book details
@@ -43,7 +57,7 @@ class Book(Base):
     isbn:Mapped[str]=mapped_column(String(20), nullable=False, unique=True)
     genre:Mapped[str]=mapped_column(String(150), nullable=False)
     publication_date:Mapped[date | None]=mapped_column(Date, nullable=True)
-    status:Mapped[str]=mapped_column(String(100), nullable=False)
+    status:Mapped[BookStatus]=mapped_column(SQLAlchemyEnum(BookStatus, name="status"), nullable=False)
     mrp:Mapped[int | None]=mapped_column(Integer, nullable=True)
     author_royalty_per_copy:Mapped[int | None]=mapped_column(Integer, nullable=True)
     total_copies_sold:Mapped[int]=mapped_column(Integer, nullable=False)

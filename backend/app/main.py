@@ -3,7 +3,7 @@ from app.config import DATABASE_URL, JWT_SECRET_KEY, JWT_ALGORITHM, ACCESS_TOKEN
 from app.database import get_db
 from app.schemas import NewAuthor, LoginRequest
 from argon2 import PasswordHasher
-from app.models import Author, Admin
+from app.models import Author, Admin, Book, BookStatus
 from sqlalchemy import text, select
 from sqlalchemy.exc import IntegrityError
 import jwt
@@ -31,7 +31,7 @@ def health_check():
         "status":"ok"
     }
 
-def verify_user(request:Request,db=Depends(get_db))->dict:
+def verify_user(request:Request,db=Depends(get_db))->dict[str,str]:
     """
     - Returns user_id and role of a authenticated user
     - If not authenticated, raises `HTTP_401_UNAUTHORIZED`
@@ -131,6 +131,28 @@ def userLogin(response:Response,user:LoginRequest, db=Depends(get_db)):
 
     return {
         "message":"Login successful."
+    }
+
+@app.get('/author/books', status_code=status.HTTP_200_OK)
+def getAuthorBooks(user=Depends(verify_user), db=Depends(get_db)):
+    """
+    Returns details for published books by author - `title`, `isbn`, `genre`, `publication_date`, `status`, `mrp`, `total_copies_sold`,
+    `total_royalty_earned`, `royalty_paid`, and `royalty_pending`
+    """
+    
+    # verify role
+    if user["role"]!="AUTHOR":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid role."
+        )
+
+    # get author's books
+
+    books=get_published_books_by_author(user["user_id"], db)
+
+    return {
+        "books":books
     }
 
 def hash_password(password:str)->str:
@@ -264,3 +286,47 @@ def findUserByID(role:ROLES, user_id:str,db)->bool:
         return False
 
     return True
+
+def get_published_books_by_author(author_id:str, db)->list[dict]:
+    """
+    - DB helper that returns a list of all books published by the author
+    - Returns `title`, `isbn`, `genre`, `publication_date`, `status`, `mrp`,
+    `total_copies_sold`, `total_royalty_earned`, `royalty_paid`, and `royalty_pending`
+
+    """
+    
+    rows=db.execute(select(
+        Book.title, 
+        Book.isbn, 
+        Book.genre, 
+        Book.publication_date,
+        Book.status, 
+        Book.mrp, 
+        Book.total_copies_sold, 
+        Book.total_royalty_earned, 
+        Book.royalty_paid, 
+        Book.royalty_pending).
+        where(
+            Book.author_id==author_id,
+            Book.status==BookStatus.PUBLISHED_AND_LIVE
+        ).
+        order_by(Book.publication_date.desc())
+    )
+
+    books=[]
+
+    for row in rows:
+        books.append({
+            "title":row.title,
+            "isbn": row.isbn,
+            "genre": row.genre,
+            "publication_date": row.publication_date,
+            "status": row.status,
+            "mrp": row.mrp,
+            "total_copies_sold": row.total_copies_sold,
+            "total_royalty_earned": row.total_royalty_earned,
+            "royalty_paid": row.royalty_paid,
+            "royalty_pending": row.royalty_pending,
+        })
+
+    return books
