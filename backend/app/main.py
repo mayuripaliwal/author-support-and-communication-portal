@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Request, Response
-from app.config import DATABASE_URL, JWT_SECRET_KEY, JWT_ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, IS_PRODUCTION, ROLES
+from app.config import DATABASE_URL, JWT_SECRET_KEY, JWT_ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, IS_PRODUCTION, ROLES, FRONTEND_URL
 from app.database import get_db
 from app.schemas import NewAuthor, LoginRequest
 from argon2 import PasswordHasher
@@ -9,10 +9,20 @@ from sqlalchemy.exc import IntegrityError
 import jwt
 from datetime import datetime, timezone, timedelta
 from typing import Literal
+from fastapi.middleware.cors import CORSMiddleware
 
 app=FastAPI(
     swagger_ui_parameters={"tryItOutEnabled": True}
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[FRONTEND_URL],
+    allow_credentials=True,
+    allow_methods=["GET","OPTIONS","POST","PATCH"],
+    allow_headers=["Content-Type"]
+)
+
 ph=PasswordHasher()
 
 @app.get('/health')
