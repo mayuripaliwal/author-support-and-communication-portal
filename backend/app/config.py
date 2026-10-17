@@ -13,3 +13,5 @@ JWT_SECRET_KEY=os.environ["JWT_SECRET_KEY"]
 IS_PRODUCTION=True if os.environ["ENVIRONMENT"] =="production" else False
 
 ROLES=Literal["AUTHOR", "ADMIN"]
+
+FRONTEND_URL=os.environ["FRONTEND_URL"]
