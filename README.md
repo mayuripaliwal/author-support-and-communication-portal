@@ -21,8 +21,16 @@ A full-stack author support portal for enabling authors to manage their books an
 
 ![View Tickets page](screenshots/author_tickets.png)
 
-### 3. Admin Portal
+![View Ticket Details page](screenshots/author_ticket_details.png)
 
+### 3. Admin Portal
+![View Tickets page](screenshots/admin_tickets.png)
+
+![View Ticket Details page 1](screenshots/admin_ticket_details_1.png)
+
+![View Ticket Details page 2](screenshots/admin_ticket_details_2.png)
+
+![AI generated draft response and ticket history](screenshots/admin_ticket_history.png)
 
 
 ## Tech Stack

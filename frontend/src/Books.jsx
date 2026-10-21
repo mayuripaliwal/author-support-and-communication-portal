@@ -148,6 +148,12 @@ export default function Books({setAuth}) {
                 {errorMessage}
             </p>
         )}
+
+        {books.length===0 && !errorMessage && !loading && (
+            <p className="text-center text-sm text-gray-600">
+                Nothing to show.
+            </p>
+        )}
       </div>
     </main>
   );
