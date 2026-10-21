@@ -3,7 +3,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import {NavLink} from "react-router-dom";
  
-export default function Navbar() {
+export default function AuthorNavbar() {
   return (
     <Disclosure as="nav" className="relative bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -47,24 +47,16 @@ export default function Navbar() {
           </div>
           <div className="flex items-center">
             <div className="shrink-0">
-              <button
-                type="button"
+              <NavLink
+                to="/ticket-form"
                 className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 <PlusIcon aria-hidden="true" className="-ml-0.5 size-5" />
                 Submit a Ticket
-              </button>
+              </NavLink>
             </div>
             <div className="hidden md:ml-4 md:flex md:shrink-0 md:items-center">
 
-              {/* Profile dropdown */}
-              <Menu as="div" className="relative ml-3">
-                <MenuButton className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">Open user menu</span>
-                  <span>Author Name</span>
-                </MenuButton>
-              </Menu>
             </div>
           </div>
         </div>
@@ -98,14 +90,6 @@ export default function Navbar() {
           >
             My Tickets
           </DisclosureButton>
-        </div>
-        <div className="border-t border-gray-200 pt-4 pb-3">
-          <div className="flex items-center px-4 sm:px-6">
-            <div className="ml-3">
-              <div className="text-base font-medium text-gray-800">Author Name</div>
-              <div className="text-sm font-medium text-gray-500">author_email@example.com</div>
-            </div>
-          </div>
         </div>
       </DisclosurePanel>
     </Disclosure>

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
+import authStatus from "./authStatus";
 
-export default function Books() {
+export default function Books({setAuth}) {
     const BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
 
     const [books, setBooks]=useState([]);
@@ -9,6 +10,7 @@ export default function Books() {
     async function fetchBooks(){
         setLoading(true);
         setBooks([]);
+        setErrorMessage("");
         try{
             const response = await fetch(`${BACKEND_URL}/author/books`,{
                 method:"GET",
@@ -21,6 +23,9 @@ export default function Books() {
             if (response.ok){
                 const result=await response.json();
                 setBooks(result["books"]);
+            }
+            else if (response.status===401){
+                setAuth(authStatus.LOGGED_OUT);
             }
             else{
                 setErrorMessage("Something went wrong. Please try again");

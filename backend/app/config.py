@@ -15,3 +15,7 @@ IS_PRODUCTION=True if os.environ["ENVIRONMENT"] =="production" else False
 ROLES=Literal["AUTHOR", "ADMIN"]
 
 FRONTEND_URL=os.environ["FRONTEND_URL"]
+
+GROQ_AUTHOR_SUPPORT_PORTAL_API=os.environ["GROQ_AUTHOR_SUPPORT_PORTAL_API"]
+
+MODEL=os.environ["GROQ_MODEL"]
