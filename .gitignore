@@ -218,7 +218,3 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-
-bookleaf_sample_data.json
-seed_script.py
-bookleaf_knowledge_base.py
