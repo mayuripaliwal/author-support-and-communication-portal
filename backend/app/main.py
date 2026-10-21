@@ -154,6 +154,16 @@ def userLogin(response:Response,user:LoginRequest, db=Depends(get_db)):
         "message":"Login successful."
     }
 
+@app.post("/logout")
+def logout(response: Response):
+    response.delete_cookie(
+        key="access_token",
+        secure=True if IS_PRODUCTION else False,
+        httponly=True,
+        samesite="none" if IS_PRODUCTION else "lax",
+    )
+    return {"message": "Logged out successfully"}
+
 @app.get('/author/books', status_code=status.HTTP_200_OK)
 def fetchAuthorBooks(published_only:bool=True,user=Depends(verify_user), db=Depends(get_db)):
     """
