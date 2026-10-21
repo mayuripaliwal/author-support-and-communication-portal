@@ -68,6 +68,11 @@ export default function AuthorTickets({setAuth}) {
       </p>
       )
     }
+    {!loading && !errorMessage && tickets.length===0 &&(
+      <p className="mt-4 text-center text-sm text-gray-600">
+        Nothing to show.
+      </p>
+    )}
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
     <ul role="list" className="divide-y divide-gray-100">
       {tickets.length>0 && tickets.map((ticket) => (
