@@ -1,8 +1,9 @@
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import authStatus from "./authStatus";
 import { formatDate } from "./AuthorTickets";
+import usePolling from "./usePolling";
 
 export default function AuthorTicketDetails({ setAuth }) {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -14,8 +15,7 @@ export default function AuthorTicketDetails({ setAuth }) {
     const [sending, setSending] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    async function fetchTicket() {
-        setLoading(true);
+    const fetchTicket=useCallback(async ()=>{
         setErrorMessage("");
 
         try {
@@ -42,12 +42,15 @@ export default function AuthorTicketDetails({ setAuth }) {
 
             const result = await response.json();
             setTicket(result.ticket);
+            setErrorMessage("");
         } catch (error) {
             setErrorMessage("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
-    }
+    },[BACKEND_URL, ticketId, setAuth]);
+
+    usePolling(fetchTicket, 5000);
 
     async function sendMessage(event) {
         event.preventDefault();
@@ -97,10 +100,6 @@ export default function AuthorTicketDetails({ setAuth }) {
             setSending(false);
         }
     }
-
-    useEffect(() => {
-        fetchTicket();
-    }, [ticketId]);
 
     if (loading) {
         return <p className="p-6 text-center">Loading ticket...</p>;
@@ -161,7 +160,7 @@ export default function AuthorTicketDetails({ setAuth }) {
                                 <div className="flex justify-between gap-3">
                                     <span className="text-sm font-semibold text-gray-900">
                                         {item.sender_type === "Admin"
-                                            ? "BookLeaf Support"
+                                            ? "Support Team"
                                             : "You"}
                                     </span>
                                     <time className="text-xs text-gray-500">

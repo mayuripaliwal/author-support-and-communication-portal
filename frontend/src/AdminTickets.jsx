@@ -1,19 +1,19 @@
-import {useState, useEffect} from "react";
+import {useState, useCallback} from "react";
 import authStatus from "./authStatus";
 import {formatDate} from "./AuthorTickets";
 import { useNavigate } from "react-router-dom";
+import usePolling from "./usePolling";
 
 export default function AdminTickets({setAuth}){
-    const [loading, setLoading]=useState(false);
+    const [loading, setLoading]=useState(true);
     const [tickets, setTickets]=useState([]);
 
     const [errorMessage, setErrorMessage]=useState("");
 
     const navigate=useNavigate();
 
-    async function getAllTickets(){
+    const getAllTickets=useCallback(async()=>{
         const BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
-        setLoading(true);
         setErrorMessage("");
         try{
             const response=await fetch(`${BACKEND_URL}/admin/tickets`,{
@@ -44,10 +44,10 @@ export default function AdminTickets({setAuth}){
         finally{
             setLoading(false);
         }
-    }
-    useEffect(()=>{
-        getAllTickets()
-    },[])
+    },[setAuth])
+
+    usePolling(getAllTickets, 5000);
+    
     return (
         <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             {loading && (
@@ -138,9 +138,9 @@ export default function AdminTickets({setAuth}){
                     >
                         <div className="flex flex-wrap items-center justify-between gap-2">
                         <span className="text-sm font-semibold text-gray-800">
-                            {message.sender_type === "ADMIN"
-                            ? "Support Team"
-                            : "You"}
+                            {message.sender_type === "Admin"
+                            ? "Admin"
+                            : "Author"}
                         </span>
 
                         <span className="text-xs text-gray-500">
