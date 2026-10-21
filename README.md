@@ -149,6 +149,20 @@ The following assumptions and design decisions were made while implementing the 
 - **Automatic classification:** AI-based category and priority classification is triggered when a ticket is created. The intention is to make classification results available for administrator triage without requiring manual categorization. Because classification can fail, category and priority may temporarily be `NULL`.
 - **On-demand AI reply generation:** AI-generated replies are created only when an administrator explicitly requests a draft. Drafts are displayed for review and editing before the administrator sends them to the author. Generated drafts are not persisted in the database as separate records; only messages actually sent are stored in the ticket conversation.
 
+## Implementation Details
+
+### Real-Time Ticket Updates
+
+- The frontend uses periodic polling every 5 seconds to fetch ticket and conversation updates. This allows authors and administrators to see new messages and ticket changes without manually refreshing the page.
+
+- The application uses polling rather than WebSockets to keep the implementation simple and appropriate for the scope of the assignment.
+
+### Context-Aware AI Reply Generation
+
+- AI-assisted reply drafting is powered by the Groq API. When an administrator requests a draft, the AI model receives the relevant ticket context, the three most recent messages in the ticket conversation, and the Knowledge base to generate a context-aware response.
+
+- The generated reply is presented as a draft for the administrator to review and edit before sending it to the author. AI-generated drafts are not stored as separate conversation messages; only messages actually sent are persisted.
+
 ## Tech Stack
 
 | Layer | Technologies |
