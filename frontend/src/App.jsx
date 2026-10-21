@@ -11,6 +11,7 @@ import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import authStatus from "./authStatus";
 import AdminPortal from "./AdminPortal";
+import Logout from "./Logout";
 
 function App() {
   const BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
@@ -69,6 +70,7 @@ function App() {
             <Route path="/admin/tickets" element={<AdminTickets setAuth={setAuth}/>}/>
             <Route path="/admin/tickets/:ticketId" element={<AdminTicketDetails setAuth={setAuth}/>}/>
             <Route path="*" element={<Navigate to="/admin/tickets" replace />}/>
+            <Route path="/logout" element={<Logout setAuth={setAuth}/>}/>
           </Route>
           </>
         )
@@ -79,6 +81,7 @@ function App() {
             <Route path="/tickets" element={<AuthorTickets setAuth={setAuth}/>}/>
             <Route path="/ticket-form" element={<TicketForm/>}/>
             <Route path="/tickets/:ticketId" element={<AuthorTicketDetails setAuth={setAuth}/>}/>
+            <Route path="/logout" element={<Logout setAuth={setAuth}/>}/>
 
             <Route path="/*" element={<Navigate to="/books" replace />} />
           </Route>
