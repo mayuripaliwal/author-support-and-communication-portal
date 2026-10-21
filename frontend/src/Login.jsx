@@ -1,7 +1,8 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
+import authStatus from "./authStatus";
 
-export default function Login() {
+export default function Login({setAuth, setAuthRole}) {
   const BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
   
   const [userEmail, setUserEmail]=useState("")
@@ -14,6 +15,8 @@ export default function Login() {
   const [loading, setLoading]=useState(false);
   const navigate=useNavigate();
 
+  const [role, setRole]=useState("AUTHOR");
+
   async function handleSubmit(event){
     event.preventDefault();
 
@@ -22,7 +25,7 @@ export default function Login() {
     setErrorMessage("");
 
     const payload={
-      "role":"AUTHOR",
+      "role":role,
       "email":userEmail.trim(),
       "password":userPassword
     }
@@ -38,21 +41,32 @@ export default function Login() {
       });
 
       if (response.ok){
+        setAuth(authStatus.LOGGED_IN);
+        setRole(role);
+        setAuthRole(role);
         setSuccess(true);
-        navigate("/books")
+        if (role==="AUTHOR"){
+          navigate("/books");
+        }
+        else if (role==="ADMIN"){
+          navigate("/admin/tickets");
+        }
       }
       else if (response.status===401){
         setErrorMessage("Invalid email or password.");
+        setAuth(authStatus.LOGGED_OUT);
       }
       else if (response.status===422){
         setErrorMessage("Invalid input.");
       }
       else{
         setErrorMessage("Something went wrong. Please try again.");
+        setAuth(authStatus.LOGGED_OUT);
       }
     }
     catch(error){
       setErrorMessage("Something went wrong. Please try again.");
+      setAuth(authStatus.LOGGED_OUT);
     }
     finally{
       setLoading(false);
@@ -72,6 +86,27 @@ export default function Login() {
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div className="bg-white px-6 py-12 shadow-sm sm:rounded-lg sm:px-12">
               <form onSubmit={handleSubmit} method="POST" className="space-y-6">
+                <div>
+                  <label
+                    htmlFor="role"
+                    className="block text-sm/6 font-medium text-gray-900"
+                  >
+                    Sign in as
+                  </label>
+
+                  <div className="mt-2">
+                    <select
+                      id="role"
+                      name="role"
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600 sm:text-sm/6"
+                    >
+                      <option value="AUTHOR">Author</option>
+                      <option value="ADMIN">Admin</option>
+                    </select>
+                  </div>
+                </div>
                 <div>
                   <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                     Email address
