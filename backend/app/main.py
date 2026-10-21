@@ -147,7 +147,7 @@ def userLogin(response:Response,user:LoginRequest, db=Depends(get_db)):
         value=access_token,
         httponly=True,
         secure=True if IS_PRODUCTION else False,
-        samesite="lax"
+        samesite="none" if IS_PRODUCTION else "lax"
     )
 
     return {
