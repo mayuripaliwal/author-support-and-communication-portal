@@ -163,6 +163,10 @@ The following assumptions and design decisions were made while implementing the 
 
 - The generated reply is presented as a draft for the administrator to review and edit before sending it to the author. AI-generated drafts are not stored as separate conversation messages; only messages actually sent are persisted.
 
+### Future Improvements
+- Adding filter option in admin portal for tickets
+- Showing errors under each input field instead of shared error messages in UI
+
 ## Tech Stack
 
 | Layer | Technologies |
