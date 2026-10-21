@@ -7,6 +7,16 @@ A full-stack author support portal for enabling authors to manage their books an
 - **Live Application:** https://author-support-and-communication-portal-1.onrender.com
 - **API Documentation:** https://author-support-and-communication-portal.onrender.com/docs
 
+## **Test Credentials**
+
+- For admin:
+    - Email: admin@email.com
+    - Password: password
+
+- For authors:
+    - Database seeded with the sample data in `backend\app\bookleaf_sample_data.json`
+    - Password: password
+
 ### 1. Authentication
 
 ![Login page](screenshots/login.png)
@@ -32,6 +42,44 @@ A full-stack author support portal for enabling authors to manage their books an
 
 ![AI generated draft response and ticket history](screenshots/admin_ticket_history.png)
 
+## Assumptions and Design Decisions
+
+The following assumptions and design decisions were made while implementing the Author Support & Communication Portal.
+
+### 1. Data Modeling and Identifiers
+
+- **MRP representation:** The MRP (Maximum Retail Price) of a book is stored as an integer, assuming prices are represented in whole currency units without fractional values.
+
+    As a consequence, author royalty per copy, total royalty earned, royalty paid, and royalty pending are stored as integers, assuming all monetary amounts are represented in whole currency units without fractional values.
+- **String-based primary keys:** The primary key formats for authors, books, admins, tickets, and ticket messages follow the conventions used in the provided sample dataset. IDs use prefixes such as `AUTH`, `BK`, `AD`, `TK`, and `TM`, respectively. String-based primary keys were chosen to preserve consistency with the supplied data and the application's ID-generation conventions.
+
+### 2. Ticket Creation and Categorization
+
+- **Book-specific or general queries:** An author can raise a support ticket associated with a specific book or submit a general/account-level query without selecting a book. Accordingly, the ticket's `book_id` is optional.
+- **Automatic ticket categorization:** Authors are not required to select a ticket category during creation. Instead, the category is inferred from the ticket's subject and description using AI, with administrators able to review and update it when necessary.
+- **Optional category and priority:** Ticket category and priority can be `NULL` when AI classification fails. These fields can subsequently be populated or updated by an administrator.
+
+### 3. Author and Administrator Accounts
+
+- **Administrator provisioning:** Administrator accounts cannot be created through the portal. They are provisioned manually rather than through public registration.
+- **Published books:** The author's *My Books* view displays books whose status is `Published & Live`. Books in earlier production stages are excluded from this view. This behavior can be extended if the requirements change.
+
+### 4. Ticket Assignment and Administration
+
+- **Claim-before-work workflow:** An administrator must assign a ticket to themselves before modifying its details or handling its support conversation. Unassigned tickets cannot be modified or handled by administrators until claimed.
+- **Assignment ownership:** Once a ticket has been assigned, only the assigned administrator can work on it. Other administrators cannot modify the ticket or send messages on its behalf.
+- **No self-service unassignment:** The portal does not provide an option to unassign a ticket once it has been claimed. Assignment changes or reassignment would require an additional workflow if needed in the future.
+
+### 5. Internal Notes and Message Visibility
+- Shared message storage: Internal notes and conversation messages are stored in the same ticket_messages table. Each record's visibility field distinguishes public messages from private internal notes.
+- Multiple internal notes: An administrator can create multiple internal notes for a ticket. Each note is stored as a separate ticket message with visibility = Private.
+- Author-facing message filtering: Author-facing ticket details and conversation endpoints return only messages with visibility = Public. Private internal notes are excluded from author responses and are visible only to authorized administrators.
+- Administrative visibility: Administrators can view both public conversation messages and private internal notes when viewing ticket history. However, viewing a ticket does not grant permission to modify it; modification and message-sending permissions remain restricted to the assigned administrator.
+
+### 6. AI Integration
+
+- **Automatic classification:** AI-based category and priority classification is triggered when a ticket is created. The intention is to make classification results available for administrator triage without requiring manual categorization. Because classification can fail, category and priority may temporarily be `NULL`.
+- **On-demand AI reply generation:** AI-generated replies are created only when an administrator explicitly requests a draft. Drafts are displayed for review and editing before the administrator sends them to the author. Generated drafts are not persisted in the database as separate records; only messages actually sent are stored in the ticket conversation.
 
 ## Tech Stack
 
@@ -80,7 +128,7 @@ All protected endpoints require authentication through the `access_token` HttpOn
 | PATCH | `/admin/tickets/{ticket_id}` | Update ticket category, priority, or status |
 | POST | `/admin/tickets/{ticket_id}/internal_note` | Add a private internal note to a ticket |
 | POST | `/admin/tickets/{ticket_id}/message` | Send a public response to the author |
-| POST | `/admin/tickets/{ticket_id}/generate-reply` | Generate an AI-assisted response draft using ticket context and the BookLeaf knowledge base |
+| POST | `/admin/tickets/{ticket_id}/generate-reply` | Generate an AI-assisted response draft using ticket context and the knowledge base |
 
 ## Database Schema
 
