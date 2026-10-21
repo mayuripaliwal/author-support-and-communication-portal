@@ -8,6 +8,7 @@ from argon2 import PasswordHasher
 
 from app.database import SessionLocal
 from app.models import Author, Book, BookStatus, Admin
+from sqlalchemy import text
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -140,7 +141,15 @@ def seed_admin():
         print("Admin seeding completed successfully!")
         print(f"Admins inserted: {inserted}")
 
+def sync_sequences():
+    with SessionLocal() as db:
+        with db.begin():
+            db.execute(text("SELECT setval('author_id_seq', 10, true)"))
+            db.execute(text("SELECT setval('book_id_seq', 18, true)"))
+            db.execute(text("SELECT setval('admin_id_seq', 1, true)"))
+
 if __name__ == "__main__":
     seed_authors()
     seed_books()
     seed_admin()
+    sync_sequences()
