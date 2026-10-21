@@ -1,6 +1,7 @@
-import {useState, useEffect} from "react";
+import {useState, useCallback } from "react";
 import authStatus from "./authStatus";
 import { Link } from "react-router-dom";
+import usePolling from "./usePolling";
 
 export function formatDate(date) {
     if (!date) return "Date unavailable";
@@ -11,48 +12,46 @@ export function formatDate(date) {
     });
   }
 export default function AuthorTickets({setAuth}) {
-  const [loading, setLoading]=useState(false);
+  const [loading, setLoading]=useState(true);
   const [tickets, setTickets]=useState([]);
 
    const [errorMessage, setErrorMessage]=useState("");
 
-  async function fetchAllTickets(){
-    const BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
-    setLoading(true);
-    try{
-      const response=await fetch(`${BACKEND_URL}/tickets`,{
-        method:"GET",
-        credentials:"include",
-        headers:{
-          "Content-Type":"application/json"
-        }
-      });
+  const fetchAllTickets=useCallback(async()=>{
+      const BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+      try{
+        const response=await fetch(`${BACKEND_URL}/tickets`,{
+          method:"GET",
+          credentials:"include",
+          headers:{
+            "Content-Type":"application/json"
+          }
+        });
 
-      if (response.ok){
-        const result=await response.json();
-        setTickets(result["tickets"]);
+        if (response.ok){
+          const result=await response.json();
+          setTickets(result["tickets"]);
+          setErrorMessage("");
+        }
+        else if (response.status===404){
+          setErrorMessage("No tickets found");
+        }
+        else if (response.status===401){
+          setAuth(authStatus.LOGGED_OUT)
+        }
+        else {
+          setErrorMessage("Something went wrong. Please try again");
+        }
       }
-      else if (response.status===404){
-        setErrorMessage("No tickets found");
-      }
-      else if (response.status===401){
-        setAuth(authStatus.LOGGED_OUT)
-      }
-      else {
+      catch(error){
         setErrorMessage("Something went wrong. Please try again");
       }
-    }
-    catch(error){
-      setErrorMessage("Something went wrong. Please try again");
-    }
-    finally{
-      setLoading(false);
-    }
-  }
+      finally{
+        setLoading(false);
+      }
+  },[setAuth])
 
-  useEffect(()=>{
-    fetchAllTickets()
-  },[]);
+  usePolling(fetchAllTickets, 5000);
 
   return (
     <>

@@ -1,6 +1,7 @@
 import authStatus from "./authStatus";
 import {useNavigate, useParams} from "react-router-dom";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback, useRef} from "react";
+import usePolling from "./usePolling";
 
 export default function AdminTicketDetails({setAuth }) {
     const BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
@@ -8,7 +9,7 @@ export default function AdminTicketDetails({setAuth }) {
     
     const navigate=useNavigate();
 
-    const [loading, setLoading]=useState(false);
+    const [loading, setLoading]=useState(true);
 
     const [errorMessage, setErrorMessage]=useState("");
 
@@ -45,8 +46,9 @@ export default function AdminTicketDetails({setAuth }) {
 
     const statuses=["Open", "In Progress", "Resolved", "Closed"];
 
-    async function getTicketDetails(){
-        setLoading(true);
+    const formEdited = useRef(false);
+
+    const getTicketDetails=useCallback(async ()=>{
         setErrorMessage("");
         try{
             const response= await fetch(`${BACKEND_URL}/admin/tickets/${ticketId}`,{
@@ -64,10 +66,11 @@ export default function AdminTicketDetails({setAuth }) {
                 
                 setTicket(result["ticket"]);
                 
-                setStatus(data.status);
-                
-                setCategory(data.category ?? "");
-                setPriority(data.priority ?? "");
+                if (!formEdited.current) {
+                    setStatus(data.status);
+                    setCategory(data.category ?? "");
+                    setPriority(data.priority ?? "");
+                }
                 
             }
             else if (response.status===404){
@@ -83,7 +86,7 @@ export default function AdminTicketDetails({setAuth }) {
         finally{
             setLoading(false);
         }
-    }
+    },[BACKEND_URL, ticketId, setAuth])
 
     async function updateTicket() {
         setUpdatingTicket(true);
@@ -104,7 +107,8 @@ export default function AdminTicketDetails({setAuth }) {
             );
 
             if (response.ok) {
-                 await getTicketDetails();
+                formEdited.current = false;
+                await getTicketDetails();
             } 
             else {
                 setErrorMessage("Failed to update ticket. Please try again.");
@@ -286,9 +290,7 @@ export default function AdminTicketDetails({setAuth }) {
     }
 
 
-    useEffect(()=>{
-        getTicketDetails()
-    },[ticketId])
+    usePolling(getTicketDetails, 5000);
 
     return (
         <>
@@ -415,7 +417,10 @@ export default function AdminTicketDetails({setAuth }) {
                             <select
                                 id="category"
                                 value={category}
-                                onChange={(e) => setCategory(e.target.value)}
+                                onChange={(e) => {
+                                    formEdited.current = true;
+                                    setCategory(e.target.value)
+                                }}
                                 className="mt-2 block w-full rounded-md border-0 py-2 pl-3 pr-8 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                             >
                                 {categories.map((item) => (
@@ -438,7 +443,10 @@ export default function AdminTicketDetails({setAuth }) {
                             <select
                                 id="priority"
                                 value={priority}
-                                onChange={(e) => setPriority(e.target.value)}
+                                onChange={(e) => {
+                                    formEdited.current = true;
+                                    setPriority(e.target.value)
+                                }}
                                 className="mt-2 block w-full rounded-md border-0 py-2 pl-3 pr-8 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                             >
                                 {priorities.map((item) => (
@@ -461,7 +469,10 @@ export default function AdminTicketDetails({setAuth }) {
                             <select
                                 id="status"
                                 value={status}
-                                onChange={(e) => setStatus(e.target.value)}
+                                onChange={(e) => {
+                                    formEdited.current = true;
+                                    setStatus(e.target.value)
+                                }}
                                 className="mt-2 block w-full rounded-md border-0 py-2 pl-3 pr-8 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                             >
                                 {statuses.map((item)=>(
