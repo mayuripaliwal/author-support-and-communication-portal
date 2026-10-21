@@ -1,4 +1,4 @@
-# BookLeaf Author Support & Communication Portal
+# Author Support & Communication Portal
 
 A full-stack author support portal for enabling authors to manage their books and support tickets while admins handle ticket assignments, classification, communication, and AI-assisted response drafting.
 
