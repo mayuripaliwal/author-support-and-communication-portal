@@ -17,6 +17,74 @@ A full-stack author support portal for enabling authors to manage their books an
     - Database seeded with the sample data in `backend\app\bookleaf_sample_data.json`
     - Password: password
 
+## Docker Setup
+
+### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
+- Git to clone the repository.
+- A Groq API key for AI-powered features.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/mayuripaliwal/author-support-and-communication-portal.git
+cd author-support-and-communication-portal
+```
+
+### 2. Configure Environment Variables
+
+Create a `backend/.env` file using the required variable names from the backend .env.example file
+
+Configure the following values:
+
+- `JWT_SECRET_KEY`: A strong, randomly generated secret used for JWT signing.
+- `GROQ_AUTHOR_SUPPORT_PORTAL_API`: Your Groq API key.
+- `GROQ_MODEL`: The model used for AI-powered features, for example `openai/gpt-oss-120b`.
+
+### 3. Build and Start the Application
+
+From the repository root, run:
+
+```bash
+docker compose up --build -d
+```
+
+**Note:** The first Docker build may take several minutes while Docker downloads the required images and installs dependencies.
+
+### 4. Initialize the Database
+
+After the backend is running and the migrations have completed, seed the database with the provided sample data:
+
+```bash
+docker compose exec backend python -m app.seed_script
+```
+
+Run the seed command once on a fresh database.
+
+### 5. Access the Application
+
+- **Frontend:** http://localhost:5173
+- **Backend API documentation:** http://localhost:8000/docs
+
+Use the demo credentials documented in this README to test author and administrator functionality.
+
+### 6. Stop the Application
+
+Stop and remove the containers and network:
+
+```bash
+docker compose down
+```
+
+The named PostgreSQL volume is preserved, so database data remains available when the application is started again.
+
+To stop the application and delete the associated database volume as well, run:
+
+```bash
+docker compose down -v
+```
+
 ### 1. Authentication
 
 ![Login page](screenshots/login.png)
