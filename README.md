@@ -5,7 +5,7 @@ A full-stack author support portal for enabling authors to manage their books an
 ## Demo
 
 - **Live Application:** https://author-support-and-communication-portal-1.onrender.com
-- **API Documentation:** https://author-support-and-communication-portal.onrender.com/docs
+- **API Documentation:** https://author-support-and-communication-portal-kmn3.onrender.com/docs
 
 ## **Test Credentials**
 
