@@ -1,4 +1,5 @@
 # AuthorConnect
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A support platform that helps publishing support teams handle author queries faster with AI-powered ticket prioritization, automatic categorization, and response suggestions, reducing manual effort and support backlogs.
 
