@@ -99,7 +99,7 @@ function TicketForm({setAuth}) {
       {!success && (
         <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8 mt-4 ">
          <form onSubmit={handleSubmit}>
-        <div className="border-b border-gray-900/10 pb-12">
+        <div className="pb-6">
           <h2 className="text-base/7 font-semibold text-gray-900">Support Query Form</h2>
           <p className="mt-1 text-sm/6 text-gray-600">
             Please fill this form to raise a ticket.
@@ -175,25 +175,10 @@ function TicketForm({setAuth}) {
               </div>
               <p className="mt-3 text-sm/6 text-gray-600">Please describe your issue in detail.</p>
             </div>
-
-            <div className="col-span-full">
-              <label htmlFor="file" className="block text-sm/6 font-medium text-gray-900">
-                Attach File
-              </label>
-              <div className="mt-2 flex items-center gap-x-3">
-                <PaperClipIcon aria-hidden="true" className="size-6 text-gray-300" />
-                <button
-                  type="button"
-                  className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50"
-                >
-                  Change
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
-        <div className="mt-6 flex justify-end pb-6 gap-x-6">
+        <div className="flex justify-end pb-6 gap-x-6">
           <button
             type="submit"
             disabled={loading}

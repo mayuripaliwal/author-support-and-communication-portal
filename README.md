@@ -7,16 +7,6 @@ A full-stack author support portal for enabling authors to manage their books an
 - **Live Application:** https://author-support-and-communication-portal-1.onrender.com
 - **API Documentation:** https://author-support-and-communication-portal-kmn3.onrender.com/docs
 
-## **Test Credentials**
-
-- For admin:
-    - Email: admin@email.com
-    - Password: password
-
-- For authors:
-    - Database seeded with the sample data in `backend\app\bookleaf_sample_data.json`
-    - Password: password
-
 ## Docker Setup
 
 ### Prerequisites
@@ -67,8 +57,6 @@ Run the seed command once on a fresh database.
 - **Frontend:** http://localhost:5173
 - **Backend API documentation:** http://localhost:8000/docs
 
-Use the demo credentials documented in this README to test author and administrator functionality.
-
 ### 6. Stop the Application
 
 Stop and remove the containers and network:
@@ -87,28 +75,28 @@ docker compose down -v
 
 ### 1. Authentication
 
-![Login page](screenshots/login.png)
+![Login page](screenshots/author-login.png)
 
-![Sign up page](screenshots/register.png)
+![Sign up page](screenshots/author-register.png)
 
 
 ### 2. Author Portal
-![Books page](screenshots/books.png)
+![Books page](screenshots/author-books.png)
 
-![Submit Ticket page](screenshots/raise_ticket.png)
+![Submit Ticket page](screenshots/author-raise-ticket.png)
 
-![View Tickets page](screenshots/author_tickets.png)
+![View Tickets page](screenshots/author-tickets-page.png)
 
-![View Ticket Details page](screenshots/author_ticket_details.png)
+![View Ticket Details page](screenshots/author-ticket-details.png)
 
 ### 3. Admin Portal
-![View Tickets page](screenshots/admin_tickets.png)
+![View Tickets page](screenshots/admin-tickets.png)
 
-![View Ticket Details page 1](screenshots/admin_ticket_details_1.png)
+![View Ticket Details page 1](screenshots/admin-ticket-details-1.png)
 
-![View Ticket Details page 2](screenshots/admin_ticket_details_2.png)
+![View Ticket Details page 2](screenshots/admin-ticket-details-2.png)
 
-![AI generated draft response and ticket history](screenshots/admin_ticket_history.png)
+![AI generated draft response and ticket history](screenshots/admin-ticket-history.png)
 
 ## Assumptions and Design Decisions
 
@@ -130,7 +118,7 @@ The following assumptions and design decisions were made while implementing the 
 ### 3. Author and Administrator Accounts
 
 - **Administrator provisioning:** Administrator accounts cannot be created through the portal. They are provisioned manually rather than through public registration.
-- **Published books:** The author's *My Books* view displays books whose status is `Published & Live`. Books in earlier production stages are excluded from this view. This behavior can be extended if the requirements change.
+- **Author's books:** The author's *My Books* view displays all books regardless of their production stage.
 
 ### 4. Ticket Assignment and Administration
 
@@ -146,7 +134,7 @@ The following assumptions and design decisions were made while implementing the 
 
 ### 6. AI Integration
 
-- **Automatic classification:** AI-based category and priority classification is triggered when a ticket is created. The intention is to make classification results available for administrator triage without requiring manual categorization. Because classification can fail, category and priority may temporarily be `NULL`.
+- **Automatic classification:** AI-based category and priority classification is triggered when a ticket is created. The intention is to make classification results available for administrator review without requiring manual categorization. Because classification can fail, category and priority may temporarily be `NULL`.
 - **On-demand AI reply generation:** AI-generated replies are created only when an administrator explicitly requests a draft. Drafts are displayed for review and editing before the administrator sends them to the author. Generated drafts are not persisted in the database as separate records; only messages actually sent are stored in the ticket conversation.
 
 ## Implementation Details
@@ -155,7 +143,7 @@ The following assumptions and design decisions were made while implementing the 
 
 - The frontend uses periodic polling every 5 seconds to fetch ticket and conversation updates. This allows authors and administrators to see new messages and ticket changes without manually refreshing the page.
 
-- The application uses polling rather than WebSockets to keep the implementation simple and appropriate for the scope of the assignment.
+- The application uses polling rather than WebSockets to keep the implementation simple and appropriate.
 
 ### Context-Aware AI Reply Generation
 

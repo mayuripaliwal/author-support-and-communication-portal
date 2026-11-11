@@ -12,7 +12,7 @@ from typing import Literal
 from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
 import json
-from app.bookleaf_knowledge_base import knowledge_base, bookleaf_response_examples
+from app.xyz_knowledge_base import knowledge_base, xyz_response_examples
 from app.models import TicketCategory, TicketPriority
 from fastapi import BackgroundTasks
 from datetime import datetime
@@ -909,14 +909,14 @@ def classify_ticket(subject:str, description:str):
             {
                 "role":"system",
                 "content":(
-                    "You classify BookLeaf support tickets. "
+                    "You classify XYZ's support tickets. "
                     "Return the classification using the provided schema."
                 ),
             },
             {
                 "role":"user",
                 "content":f"""
-                    Classify this BookLeaf Publishing support ticket.
+                    Classify this XYZ Publishing's support ticket.
                     
                         Use the following knowledge base as factual context:
                         {knowledge_base}
@@ -1400,8 +1400,8 @@ def generate_ticket_reply(subject:str, description:str, ticket_created_at: str,t
                 "role":"system",
                 "content":(
                     """
-                    You are BookLeaf Publishing's Author Support Assistant.
-                    Your role is to help BookLeaf administrators respond to author
+                    You are XYZ Publishing's Author Support Assistant.
+                    Your role is to help XYZ's administrators respond to author
                     support tickets by generating accurate, empathetic, professional,
                     and actionable reply drafts.
 
@@ -1414,7 +1414,7 @@ def generate_ticket_reply(subject:str, description:str, ticket_created_at: str,t
                     information, and recent ticket history to understand the
                     author's concern and prepare an appropriate response.
 
-                    Follow BookLeaf's policies and communication guidelines.
+                    Follow XYZ's policies and communication guidelines.
                     Never invent facts, claim that an action has been completed
                     without confirmation, or promise unsupported outcomes or timelines.
                     """
@@ -1428,7 +1428,7 @@ def generate_ticket_reply(subject:str, description:str, ticket_created_at: str,t
                         {knowledge_base}
 
                         Use the following examples to frame the responses
-                        {bookleaf_response_examples}
+                        {xyz_response_examples}
 
                         Today's date and time:
                         {datetime.now(timezone.utc).isoformat()}
@@ -1455,7 +1455,7 @@ def generate_ticket_reply(subject:str, description:str, ticket_created_at: str,t
         response_format={
                     "type": "json_schema",
                     "json_schema": {
-                        "name": "bookleaf_support_reply",
+                        "name": "xyz_support_reply",
                         "strict": True,
                         "schema": {
                             "type": "object",

@@ -12,7 +12,7 @@ export default function Books({setAuth}) {
         setBooks([]);
         setErrorMessage("");
         try{
-            const response = await fetch(`${BACKEND_URL}/author/books`,{
+            const response = await fetch(`${BACKEND_URL}/author/books?published_only=False`,{
                 method:"GET",
                 headers:{
                     "Content-Type":"application/json"
@@ -55,8 +55,21 @@ export default function Books({setAuth}) {
                 <li className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 hover:-translate-y-1 hover:shadow-lg">
                     <div className="flex items-center gap-4 border-b border-gray-100 bg-gray-50/80 p-5">
                         <div className="min-w-0 flex-1">
-                        <span className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-semibold text-green-700 ring-1 ring-green-600/20">
-                            <span className="size-1.5 rounded-full bg-green-600" />
+                        <span 
+                        className={`mb-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold  ring-1 ${
+                            book.status=="Published & Live" ?
+                            "bg-green-50 text-green-700 ring-green-600/20"
+                            :
+                            "bg-blue-50 text-blue-700 ring-blue-600/20"
+                        }`}
+                        >
+                            <span className={`size-1.5 rounded-full ${
+                                book.status=="Published & Live" ?
+                                "bg-green-600" 
+                                :
+                                "bg-blue-600"
+                            }`}
+                            />
                             {book.status}
                         </span>
 
@@ -82,14 +95,14 @@ export default function Books({setAuth}) {
                         <div className="flex items-start justify-between gap-4 py-3">
                         <dt className="shrink-0 text-sm text-gray-500">Publication date</dt>
                         <dd className="min-w-0 break-words text-right text-sm font-medium text-gray-900">
-                            {book.publication_date}
+                            {book.publication_date ?book.publication_date:"Not published yet"}
                         </dd>
                         </div>
 
                         <div className="flex items-start justify-between gap-4 py-3">
                         <dt className="shrink-0 text-sm text-gray-500">MRP</dt>
                         <dd className="min-w-0 break-words text-right text-sm font-medium text-gray-900">
-                            INR {book.mrp}
+                            {book.mrp?"₹ ":""}{book.mrp?book.mrp:"N/A"}
                         </dd>
                         </div>
                     </dl>
@@ -111,21 +124,21 @@ export default function Books({setAuth}) {
                         <div className="rounded-xl bg-gray-50 p-3">
                             <p className="text-xs text-gray-500">Total earned</p>
                             <p className="mt-1 text-xl font-semibold tabular-nums text-gray-900">
-                            INR {book.total_royalty_earned}
+                            ₹ {book.total_royalty_earned}
                             </p>
                         </div>
 
-                        <div className="rounded-xl border border-gray-100 p-3">
+                        <div className="rounded-xl bg-gray-50 p-3">
                             <p className="text-xs text-gray-500">Royalty paid</p>
-                            <p className="mt-1 text-base font-semibold tabular-nums text-gray-800">
-                            INR {book.royalty_paid}
+                            <p className="mt-1 text-xl font-semibold tabular-nums text-gray-900">
+                            ₹ {book.royalty_paid}
                             </p>
                         </div>
 
-                        <div className="rounded-xl bg-[#EDF3E9] p-3 ring-1 ring-[#DDE8D6]">
-                            <p className="text-xs text-[#52664A]">Royalty pending</p>
-                            <p className="mt-1 text-base font-bold tabular-nums text-[#36552D]">
-                            INR {book.royalty_pending}
+                        <div className="rounded-xl bg-gray-50 p-3">
+                            <p className="text-xs text-gray-500">Royalty pending</p>
+                            <p className="mt-1 text-xl font-semibold tabular-nums text-gray-900">
+                            ₹ {book.royalty_pending}
                             </p>
                         </div>
                         </div>

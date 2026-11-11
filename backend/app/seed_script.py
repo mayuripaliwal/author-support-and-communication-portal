@@ -12,7 +12,7 @@ from sqlalchemy import text
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_FILE = BASE_DIR / "bookleaf_sample_data.json"
+DATA_FILE = BASE_DIR / "xyz_sample_data.json"
 
 password_hasher = PasswordHasher()
 
