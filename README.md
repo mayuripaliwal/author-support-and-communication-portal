@@ -1,13 +1,43 @@
 # Author Support & Communication Portal
 
-A full-stack author support portal for enabling authors to manage their books and support tickets while admins handle ticket assignments, classification, communication, and AI-assisted response drafting.
+A support platform that helps publishing support teams handle author queries faster with AI-powered ticket prioritization, automatic categorization, and response suggestions, reducing manual effort and support backlogs.
+
+## Link
+
+[Try the Support Portal](https://author-support-and-communication-portal-1.onrender.com)
+- API Documentation available at [API Docs](https://author-support-and-communication-portal.onrender.com/docs)
+- Application is pre-seeded with sample dataset available [here](backend/app/xyz_sample_data.json)
+
+- Note: Since the application is pre-seeded with sample author accounts, those can be used to demo the ticket flow for book related queries. Alternatively, new author accounts can also raise tickets but will not have any books against them.
 
 ## Demo
 
-- **Live Application:** https://author-support-and-communication-portal-1.onrender.com
-- **API Documentation:** https://author-support-and-communication-portal.onrender.com/docs
+### 1. Authentication
 
-## Docker Setup
+![Login page](screenshots/author-login.png)
+
+![Sign up page](screenshots/author-register.png)
+
+
+### 2. Author Portal
+![Books page](screenshots/author-books.png)
+
+![Submit Ticket page](screenshots/author-raise-ticket.png)
+
+![View Tickets page](screenshots/author-tickets-page.png)
+
+![View Ticket Details page](screenshots/author-ticket-details.png)
+
+### 3. Admin Portal
+![View Tickets page](screenshots/admin-tickets.png)
+
+![View Ticket Details page 1](screenshots/admin-ticket-details-1.png)
+
+![View Ticket Details page 2](screenshots/admin-ticket-details-2.png)
+
+![AI generated draft response and ticket history](screenshots/admin-ticket-history.png)
+
+## Run with Docker
 
 ### Prerequisites
 
@@ -73,32 +103,20 @@ To stop the application and delete the associated database volume as well, run:
 docker compose down -v
 ```
 
-### 1. Authentication
+## Tech Stack
 
-![Login page](screenshots/author-login.png)
+| Layer | Technologies |
+|---|---|
+| Frontend | React, Vite, Tailwind CSS, React Router |
+| Backend | Python, FastAPI |
+| Database | PostgreSQL |
+| ORM and Migrations | SQLAlchemy, Alembic |
+| Authentication | JWT, HttpOnly cookies, Argon2 password hashing |
+| AI Integration | Groq API |
+| Background Processing | FastAPI BackgroundTasks |
+| Deployment | Render (frontend, backend, PostgreSQL) |
 
-![Sign up page](screenshots/author-register.png)
-
-
-### 2. Author Portal
-![Books page](screenshots/author-books.png)
-
-![Submit Ticket page](screenshots/author-raise-ticket.png)
-
-![View Tickets page](screenshots/author-tickets-page.png)
-
-![View Ticket Details page](screenshots/author-ticket-details.png)
-
-### 3. Admin Portal
-![View Tickets page](screenshots/admin-tickets.png)
-
-![View Ticket Details page 1](screenshots/admin-ticket-details-1.png)
-
-![View Ticket Details page 2](screenshots/admin-ticket-details-2.png)
-
-![AI generated draft response and ticket history](screenshots/admin-ticket-history.png)
-
-## Assumptions and Design Decisions
+## Design Decisions
 
 The following assumptions and design decisions were made while implementing the Author Support & Communication Portal.
 
@@ -139,7 +157,7 @@ The following assumptions and design decisions were made while implementing the 
 
 ## Implementation Details
 
-### Real-Time Ticket Updates
+### Near Real-Time Ticket Updates
 
 - The frontend uses periodic polling every 5 seconds to fetch ticket and conversation updates. This allows authors and administrators to see new messages and ticket changes without manually refreshing the page.
 
@@ -154,19 +172,6 @@ The following assumptions and design decisions were made while implementing the 
 ### Future Improvements
 - Adding filter option in admin portal for tickets
 - Showing errors under each input field instead of shared error messages in UI
-
-## Tech Stack
-
-| Layer | Technologies |
-|---|---|
-| Frontend | React, Vite, Tailwind CSS, React Router |
-| Backend | Python, FastAPI |
-| Database | PostgreSQL |
-| ORM and Migrations | SQLAlchemy, Alembic |
-| Authentication | JWT, HttpOnly cookies, Argon2 password hashing |
-| AI Integration | Groq API |
-| Background Processing | FastAPI BackgroundTasks |
-| Deployment | Render (frontend, backend, PostgreSQL) |
 
 ## API Endpoints
 
