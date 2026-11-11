@@ -117,7 +117,7 @@ def seed_admin():
 
     admins=[{
         "admin_id":"AD001",
-        "email":"admin@email.com"
+        "email":"admin@example.com"
     }]
 
     inserted=0
