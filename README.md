@@ -1,14 +1,14 @@
-# Author Support & Communication Portal
+# AuthorConnect
 
 A support platform that helps publishing support teams handle author queries faster with AI-powered ticket prioritization, automatic categorization, and response suggestions, reducing manual effort and support backlogs.
 
-## Link
+## Links
 
 [Try the Support Portal](https://author-support-and-communication-portal-1.onrender.com)
 - API Documentation available at [API Docs](https://author-support-and-communication-portal.onrender.com/docs)
 - Application is pre-seeded with sample dataset available [here](backend/app/xyz_sample_data.json)
 
-- Note: Since the application is pre-seeded with sample author accounts, those can be used to demo the ticket flow for book related queries. Alternatively, new author accounts can also raise tickets but will not have any books against them.
+- Note: Since the application is pre-seeded with sample author accounts, those can be used to demo the ticket flow for book-related queries. Alternatively, new author accounts can also raise tickets but will not have any books associated with their accounts
 
 ## Demo
 
