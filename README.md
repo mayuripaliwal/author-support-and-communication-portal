@@ -30,7 +30,7 @@ Configure the following values:
 
 - `JWT_SECRET_KEY`: A strong, randomly generated secret used for JWT signing.
 - `GROQ_AUTHOR_SUPPORT_PORTAL_API`: Your Groq API key.
-- `GROQ_MODEL`: The model used for AI-powered features, for example `openai/gpt-oss-120b`.
+- `GROQ_MODEL`: The model used for AI-powered features, for example `openai/gpt-oss-120b` (any groq model which supports strict schema.)
 
 ### 3. Build and Start the Application
 
