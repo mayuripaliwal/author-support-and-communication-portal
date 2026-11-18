@@ -65,11 +65,14 @@ export default function Signup() {
   return (
     <>
       {!success && 
-        (<div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+        (<div className="flex min-h-full flex-col justify-center py-8 sm:px-6 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <h2 className="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-              Create your account today!
-            </h2>
+            <h2 className="text-center font-bold text-2xl/9 tracking-tight text-gray-900">
+              Create your author account
+            </h2 >
+            <p className="mt-2 text-center text-base text-gray-900">
+              Manage your book publication queries effectively.
+            </p>
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
@@ -130,6 +133,7 @@ export default function Signup() {
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                       <label htmlFor="phone" className="block text-sm/6 font-medium text-gray-900">
                       Phone
@@ -162,6 +166,7 @@ export default function Signup() {
                       />
                       </div>
                   </div>
+                </div>
 
                 {/*Error message */}
                 {errorMessage && (
@@ -183,7 +188,7 @@ export default function Signup() {
               </form>
             </div>
 
-            <p className="mt-10 text-center text-sm/6 text-gray-500">
+            <p className="mt-5 text-center text-sm/6 text-gray-500">
               Already have an account?{' '}
               <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
                 Sign In
