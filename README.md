@@ -11,7 +11,7 @@ A support platform that helps publishing support teams handle author queries fas
 
 https://github.com/user-attachments/assets/1de1253f-48be-4ce7-b64f-e04cbf2d825d
 
-- API Documentation available at [API Docs](https://author-support-and-communication-portal.onrender.com/docs)
+- API Documentation available at [API Docs](https://author-support-and-communication-portal-tzli.onrender.com/docs)
 - Application is pre-seeded with sample dataset available [here](backend/app/xyz_sample_data.json)
 
 - Note: Since the application is pre-seeded with sample author accounts, those can be used to demo the ticket flow for book-related queries. Alternatively, new author accounts can also raise tickets but will not have any books associated with their accounts
