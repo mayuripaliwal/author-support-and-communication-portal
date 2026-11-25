@@ -12,6 +12,7 @@ import {useState, useEffect} from "react";
 import authStatus from "./authStatus";
 import AdminPortal from "./AdminPortal";
 import Logout from "./Logout";
+import LandingPage from "./LandingPage";
 
 function App() {
   const BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
@@ -55,10 +56,11 @@ function App() {
     <Routes>
       {auth!=authStatus.LOGGED_IN && (
         <>
+        <Route path="/" element={<LandingPage/>}/>
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/login" element={<Login setAuth={setAuth} setAuthRole={setRole}/>}/>
 
-        <Route path="/*" element={<Navigate to="/login" replace />} />
+        <Route path="/*" element={<Navigate to="/" replace />} />
         </>
       )
       }
