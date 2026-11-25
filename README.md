@@ -6,6 +6,11 @@ A support platform that helps publishing support teams handle author queries fas
 ## Links
 
 [Try the Support Portal](https://author-support-and-communication-portal-1.onrender.com)
+
+## Demo
+
+https://github.com/user-attachments/assets/1de1253f-48be-4ce7-b64f-e04cbf2d825d
+
 - API Documentation available at [API Docs](https://author-support-and-communication-portal.onrender.com/docs)
 - Application is pre-seeded with sample dataset available [here](backend/app/xyz_sample_data.json)
 
